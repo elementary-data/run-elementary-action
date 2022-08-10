@@ -8,6 +8,16 @@ Below is a basic example of an Elementary workflow file.
 For more information on how to
 use [GitHub workflows](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions).
 
+If you have not yet installed Elementary's dbt package, please refer
+to [this guide](https://docs.elementary-data.com/quickstart#how-to-install-elementary-dbt-package).
+
+In order to generate the `profiles.yml` that is needed by `edr` to operate, run the following command within your Dbt
+project:
+
+```shell
+dbt run-operation --args '{"method": "github-actions"}' elementary.generate_elementary_cli_profile
+```
+
 ```yaml
 name: Run Elementary
 on:
