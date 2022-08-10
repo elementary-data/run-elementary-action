@@ -35,9 +35,7 @@ jobs:
         with:
           warehouse-type: ${{ secrets.WAREHOUSE_TYPE }} # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
           profiles-yml: ${{ secrets.PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
-          elementary-conf-yml: ${{ secrets.ELEMENTARY_CONF_YML }} # Content of ~/.edr/config.yml such as Slack integration, S3 and so on.
-          monitor: true # Whether to run the monitor command, default is true.
-          send-report: false # Whether to run the send-report command, default is false.
+          edr-command: edr monitor --slack-webhook ${{ secrets.SLACK_WEBHOOK }} # The edr command.
 ```
 
 Having trouble? Please contact us
