@@ -7,7 +7,8 @@ SHOULD_RUN_MONITOR=$4
 SHOULD_RUN_SEND_REPORT=$5
 
 echo "Installing Elementary with '$WAREHOUSE_TYPE' adapter."
-pip3 install "elementary-data[$WAREHOUSE_TYPE]"
+# pip3 install "elementary-data[$WAREHOUSE_TYPE]"
+pip3 install "git+https://github.com/elementary-data/elementary.git@master"
 
 echo "Configuring Elementary."
 mkdir -p ~/.edr
