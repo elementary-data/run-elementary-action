@@ -36,7 +36,15 @@ jobs:
           warehouse-type: ${{ secrets.WAREHOUSE_TYPE }} # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
           profiles-yml: ${{ secrets.PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
           edr-command: edr monitor --slack-webhook ${{ secrets.SLACK_WEBHOOK }} # The edr command.
+
+          bigquery-keyfile: ${{ secrets.BIGQUERY_KEYFILE }} # If using BigQuery, the content of its keyfile.
 ```
+
+## BigQuery Keyfile Authentication
+
+If you're using BigQuery with a key file,
+supply the `bigquery-keyfile` argument to the action and make sure your `keyfile` in the `profiles-yml`
+is `/tmp/bigquery_keyfile.json`.
 
 Having trouble? Please contact us
 on [Slack](https://join.slack.com/t/elementary-community/shared_invite/zt-uehfrq2f-zXeVTtXrjYRbdE_V6xq4Rg), we're here
