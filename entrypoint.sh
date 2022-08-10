@@ -6,7 +6,7 @@ ELEMENTARY_CONF_YML=$3
 SHOULD_RUN_MONITOR=$4
 SHOULD_RUN_SEND_REPORT=$5
 
-echo "Installing Elementary with $WAREHOUSE_TYPE adapter."
+echo "Installing Elementary with '$WAREHOUSE_TYPE' adapter."
 pip3 install "elementary-data[$WAREHOUSE_TYPE]"
 
 echo "Configuring Elementary."
