@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 WAREHOUSE_TYPE=$1
 PROFILES_YML=$2
 ELEMENTARY_CONF_YML=$3
