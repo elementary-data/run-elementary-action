@@ -1,12 +1,12 @@
-# Elementary Github Action
+# Elementary GitHub Action
 
-This action allows you to run `edr` as a Github Action.  
+This action allows you to run `edr` as a GitHub Action.  
 In order to use this action, you will need to create a workflow within your repository.  
 To create a new workflow, simply create `.github/workflows/elementary.yml` within your repository.
 
 Below is a basic example of an Elementary workflow file.  
 For more information on how to
-use [Github workflows](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions).
+use [GitHub workflows](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions).
 
 ```yaml
 name: Run Elementary
