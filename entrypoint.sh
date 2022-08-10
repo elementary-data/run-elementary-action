@@ -23,5 +23,5 @@ if [ "$SHOULD_RUN_MONITOR" = "true" ]; then
 fi
 
 if [ "$SHOULD_RUN_SEND_REPORT" = "true" ]; then
-    edr send-report
+    edr monitor send-report
 fi

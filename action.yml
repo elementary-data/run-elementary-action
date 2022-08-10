@@ -18,7 +18,7 @@ inputs:
     description: "Should run `edr monitor`"
     default: true
   send-report:
-    description: 'Should run `edr send-report`'
+    description: 'Should run `edr monitor send-report`'
     default: false
 
 runs:
