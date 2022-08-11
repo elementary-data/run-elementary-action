@@ -7,7 +7,7 @@ To create a new workflow, simply create `.github/workflows/elementary.yml` withi
 If you have not yet installed Elementary's dbt package, please refer
 to [this guide](https://docs.elementary-data.com/quickstart#how-to-install-elementary-dbt-package).
 
-In order to generate the `profiles.yml` that is needed by `edr` to operate, run the following command within your Dbt
+In order to generate the `profiles.yml` that is needed by `edr` to operate, run the following command within your dbt
 project:
 
 ```shell
