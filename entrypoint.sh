@@ -16,4 +16,4 @@ echo $PROFILES_YML > ~/.dbt/profiles.yml
 echo $BIGQUERY_KEYFILE > /tmp/bigquery_keyfile.json
 
 echo "Running the edr command."
-bash -c $EDR_COMMAND
+$EDR_COMMAND
