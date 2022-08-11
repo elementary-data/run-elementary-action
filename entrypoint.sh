@@ -12,8 +12,8 @@ pip3 install "elementary-data[$WAREHOUSE_TYPE]"
 
 echo "Configuring Dbt profile."
 mkdir -p ~/.dbt
-echo $PROFILES_YML > ~/.dbt/profiles.yml
-echo $BIGQUERY_KEYFILE > /tmp/bigquery_keyfile.json
+echo "$PROFILES_YML" > ~/.dbt/profiles.yml
+echo "$BIGQUERY_KEYFILE" > /tmp/bigquery_keyfile.json
 
 echo "Running the edr command."
 $EDR_COMMAND
