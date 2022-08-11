@@ -45,7 +45,9 @@ jobs:
         with:
           warehouse-type: ${{ secrets.WAREHOUSE_TYPE }} # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
           profiles-yml: ${{ secrets.PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
-          edr-command: edr monitor --slack-webhook ${{ secrets.SLACK_WEBHOOK }} # The edr command.
+          edr-command: |
+            edr monitor --slack-token ${{ secrets.SLACK_TOKEN }} --slack-channel-name ${{ secrets.SLACK_CHANNEL_NAME }}
+            edr monitor send-report --slack-token ${{ secrets.SLACK_TOKEN }} --slack-channel-name ${{ secrets.SLACK_CHANNEL_NAME }}
 
           bigquery-keyfile: ${{ secrets.BIGQUERY_KEYFILE }} # If using BigQuery, the content of its keyfile.
 ```
