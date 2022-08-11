@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Elementary
-        uses: elementary-data/run-elementary-action@main
+        uses: elementary-data/run-elementary-action@v1
         with:
           warehouse-type: ${{ secrets.WAREHOUSE_TYPE }} # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
           profiles-yml: ${{ secrets.PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
