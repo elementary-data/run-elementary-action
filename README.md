@@ -58,6 +58,8 @@ If you're using BigQuery with a key file,
 supply the `bigquery-keyfile` argument to the action and make sure your `keyfile` in the `profiles-yml`
 is `/tmp/bigquery_keyfile.json`.
 
-Having trouble? Please contact us
+## Having trouble?
+
+Please contact us
 on [Slack](https://join.slack.com/t/elementary-community/shared_invite/zt-uehfrq2f-zXeVTtXrjYRbdE_V6xq4Rg), we're here
 to help!
