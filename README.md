@@ -52,7 +52,21 @@ jobs:
           bigquery-keyfile: ${{ secrets.BIGQUERY_KEYFILE }} # If using BigQuery, the content of its keyfile.
 ```
 
-## BigQuery Keyfile Authentication
+## Configuration
+
+### Elementary Profile
+
+Note that the `profiles-yml` argument needs to be the **content** of  `profiles.yml` rather than a path to it.  
+You can create a secret and then pass it.
+
+```yml
+profiles-yml: ${{ secrets.PROFILES_YML }}
+```
+
+<img width="1097" alt="image" src="https://user-images.githubusercontent.com/30181361/185250359-918a10ab-b323-4ce3-b598-307ecedadeb9.png">
+
+
+### BigQuery Keyfile Authentication
 
 If you're using BigQuery with a key file,
 supply the `bigquery-keyfile` argument to the action and make sure your `keyfile` in the `profiles-yml`
