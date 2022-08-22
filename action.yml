@@ -22,6 +22,10 @@ inputs:
   bigquery-keyfile:
     description: 'The content of your BigQuery keyfile.'
     required: false
+  gcs-keyfile:
+    description: 'The content of your Google service account keyfile, for usage with Google Cloud Storage.'
+    required: false
+
 
 runs:
   using: 'docker'
@@ -31,3 +35,4 @@ runs:
     - ${{ inputs.profiles-yml }}
     - ${{ inputs.edr-command }}
     - ${{ inputs.bigquery-keyfile }}
+    - ${{ inputs.gcs-keyfile }}
