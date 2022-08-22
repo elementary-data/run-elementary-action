@@ -2,6 +2,10 @@ name: 'Run Elementary'
 author: 'Elementary Data'
 description: 'Monitor your dbt project and be the first to know of data issues.'
 
+branding:
+  icon: 'alert-triangle'
+  color: 'red'
+
 inputs:
   warehouse-type:
     description: 'The type of your warehouse (snowflake, bigquery, redshift, etc)'
