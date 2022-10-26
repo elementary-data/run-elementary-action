@@ -47,6 +47,7 @@ jobs:
           profiles-yml: ${{ secrets.PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
           edr-command: |
             edr monitor --slack-token ${{ secrets.SLACK_TOKEN }} --slack-channel-name ${{ secrets.SLACK_CHANNEL_NAME }}
+            edr monitor report --file-path report.html
             edr monitor send-report \
             --slack-token ${{ secrets.SLACK_TOKEN }} --slack-channel-name ${{ secrets.SLACK_CHANNEL_NAME }} \
             --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} --aws-secret-access-key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --s3-bucket-name ${{ secrets.S3_BUCKET_NAME }} \
@@ -55,6 +56,19 @@ jobs:
 
           bigquery-keyfile: ${{ secrets.BIGQUERY_KEYFILE }} # If using BigQuery, the content of its keyfile.
           gcs-keyfile: ${{ secrets.GCS_KEYFILE }} # If using GCS, the content of its keyfile.
+
+      - name: Upload report
+        uses: actions/upload-artifact@v3
+        with:
+          name: report.html
+          path: report.html
+
+      - name: Upload log
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: edr.log
+          path: edr.log
 ```
 
 ## Configuration
@@ -70,7 +84,6 @@ profiles-yml: ${{ secrets.PROFILES_YML }}
 
 <img width="1097" alt="image" src="https://user-images.githubusercontent.com/30181361/185250359-918a10ab-b323-4ce3-b598-307ecedadeb9.png">
 
-
 ### BigQuery Keyfile Authentication
 
 If you're using BigQuery with a key file,
@@ -82,7 +95,6 @@ is `/tmp/bigquery_keyfile.json`.
 If you want to upload your report to a Google Cloud Storage bucket using `send-report`,
 supply the `gcs-keyfile` argument to the action with the **content** of your Google service account keyfile.
 Afterwards, use `edr monitor send-report --google-service-account-path /tmp/gcs_keyfile.json` to upload the report.
-
 
 ## Having trouble?
 
