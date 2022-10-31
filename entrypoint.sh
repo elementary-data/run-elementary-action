@@ -6,6 +6,7 @@ EDR_COMMAND=$3
 BIGQUERY_KEYFILE=$4
 GCS_KEYFILE=$5
 
+pip install "dbt-$WAREHOUSE_TYPE"
 
 echo "Initializing environment."
 mkdir -p ~/.dbt
@@ -20,10 +21,10 @@ echo "Elementary's dbt package version - $DBT_PKG_VER"
 echo "Installing Elementary with '$WAREHOUSE_TYPE' adapter."
 if [ -z "$DBT_PKG_VER" ] then
   echo "Installing latest edr version."
-  pip3 install "elementary-data[$WAREHOUSE_TYPE]"
+  pip install "elementary-data[$WAREHOUSE_TYPE]"
 else
   echo "Installing latest compatible edr version."
-  pip3 install "elementary-data[$WAREHOUSE_TYPE]~=$DBT_PKG_VER"
+  pip install "elementary-data[$WAREHOUSE_TYPE]~=$DBT_PKG_VER"
 fi
 
 echo "Running the edr command."
