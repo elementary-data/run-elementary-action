@@ -19,7 +19,8 @@ DBT_PKG_VER=$(dbt -q run-operation get_elementary_dbt_pkg_version --project-dir 
 echo "Elementary's dbt package version - $DBT_PKG_VER"
 
 echo "Installing Elementary with '$WAREHOUSE_TYPE' adapter."
-if [ -z "$DBT_PKG_VER" ] then
+if [ -z "$DBT_PKG_VER" ]
+then
   echo "Installing latest edr version."
   pip install "elementary-data[$WAREHOUSE_TYPE]"
 else
