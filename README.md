@@ -43,8 +43,9 @@ jobs:
       - name: Run Elementary
         uses: elementary-data/run-elementary-action@v1.1
         with:
-          warehouse-type: bigquery # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
+          adapter: bigquery # Adapter of your warehouse (bigquery, snowflake, redshift, etc.)
           profiles-yml: ${{ secrets.PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
+          target: prod # An optional target for your 'elementary' profile, otherwise using default target.
           edr-command: |
             edr monitor --slack-token ${{ secrets.SLACK_TOKEN }} --slack-channel-name ${{ secrets.SLACK_CHANNEL_NAME }}
             edr monitor report --file-path report.html
