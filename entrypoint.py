@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 import sys
@@ -7,17 +8,19 @@ from typing import Optional
 from packaging import version
 from pydantic import BaseModel
 
+logging.basicConfig(format="%(asctime)s %(message)s", level=logging.DEBUG)
+
 
 def install_dbt(adapter: str):
     dbt_pkg_name = f"dbt-{adapter}"
-    print(f"Installing {dbt_pkg_name}")
+    logging.info(f"Installing {dbt_pkg_name}")
     subprocess.run([sys.executable, "-m", "pip", "install", dbt_pkg_name], check=True)
 
 
 def setup_env(
     profiles_yml: str, bigquery_keyfile: Optional[str], gcs_keyfile: Optional[str]
 ):
-    print(f"Setting up the environment.")
+    logging.info(f"Setting up the environment.")
     dbt_dir = Path.home() / ".dbt"
     dbt_dir.mkdir(parents=True, exist_ok=True)
     dbt_dir.joinpath("profiles.yml").write_text(profiles_yml)
@@ -28,7 +31,7 @@ def setup_env(
 
 
 def install_edr(adapter: str):
-    print("Getting Elementary dbt package version.")
+    logging.info("Getting Elementary dbt package version.")
     dbt_pkg_ver = (
         subprocess.run(
             [
@@ -46,16 +49,16 @@ def install_edr(adapter: str):
         .strip()
     )
     if not dbt_pkg_ver:
-        print("Unable to get Elementary's dbt package version.")
-        print(f"Installing latest edr.")
+        logging.info("Unable to get Elementary's dbt package version.")
+        logging.info(f"Installing latest edr.")
         subprocess.run(
             [sys.executable, "-m", "pip", "install", f"elementary-data[{adapter}]"],
             check=True,
         )
     else:
         dbt_pkg_ver = version.parse(dbt_pkg_ver)
-        print(f"Elementary's dbt package version - {dbt_pkg_ver}")
-        print(f"Installing latest compatible version with {dbt_pkg_ver}")
+        logging.info(f"Elementary's dbt package version - {dbt_pkg_ver}")
+        logging.info(f"Installing latest compatible version with {dbt_pkg_ver}")
         base_compatible_edr_version = version.parse(
             f"{dbt_pkg_ver.major}.{dbt_pkg_ver.minor}.0"
         )
@@ -72,7 +75,7 @@ def install_edr(adapter: str):
 
 
 def run_edr(edr_command: str):
-    print(f"Running the edr command.")
+    logging.info(f"Running the edr command.")
     subprocess.run(edr_command, shell=True)
 
 
