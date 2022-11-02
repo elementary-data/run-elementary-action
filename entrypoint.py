@@ -49,16 +49,18 @@ def install_edr(adapter: str):
         .strip()
     )
     if not dbt_pkg_ver:
-        logging.info("Unable to get Elementary's dbt package version.")
-        logging.info(f"Installing latest edr.")
+        logging.info(
+            "Unable to get Elementary's dbt package version. Installing latest edr."
+        )
         subprocess.run(
             [sys.executable, "-m", "pip", "install", f"elementary-data[{adapter}]"],
             check=True,
         )
     else:
         dbt_pkg_ver = version.parse(dbt_pkg_ver)
-        logging.info(f"Elementary's dbt package version - {dbt_pkg_ver}")
-        logging.info(f"Installing latest compatible version with {dbt_pkg_ver}")
+        logging.info(
+            f"Elementary's dbt package version - {dbt_pkg_ver}. Installing latest compatible version."
+        )
         base_compatible_edr_version = version.parse(
             f"{dbt_pkg_ver.major}.{dbt_pkg_ver.minor}.0"
         )
