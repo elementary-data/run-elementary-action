@@ -30,9 +30,3 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.warehouse-type }}
-    - ${{ inputs.profiles-yml }}
-    - ${{ inputs.edr-command }}
-    - ${{ inputs.bigquery-keyfile }}
-    - ${{ inputs.gcs-keyfile }}

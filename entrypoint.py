@@ -1,8 +1,11 @@
+import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import Optional
 
 from packaging import version
+from pydantic import BaseModel
 
 
 def install_dbt(adapter: str):
@@ -11,13 +14,17 @@ def install_dbt(adapter: str):
     subprocess.run([sys.executable, "-m", "pip", "install", dbt_pkg_name], check=True)
 
 
-def setup_env(profiles_yml: str, bigquery_keyfile: str, gcs_keyfile: str):
+def setup_env(
+    profiles_yml: str, bigquery_keyfile: Optional[str], gcs_keyfile: Optional[str]
+):
     print(f"Setting up the environment.")
     dbt_dir = Path.home() / ".dbt"
     dbt_dir.mkdir(parents=True, exist_ok=True)
     dbt_dir.joinpath("profiles.yml").write_text(profiles_yml)
-    Path("/tmp/bigquery_keyfile.json").write_text(bigquery_keyfile)
-    Path("/tmp/gcs_keyfile.json").write_text(gcs_keyfile)
+    if bigquery_keyfile:
+        Path("/tmp/bigquery_keyfile.json").write_text(bigquery_keyfile)
+    if gcs_keyfile:
+        Path("/tmp/gcs_keyfile.json").write_text(gcs_keyfile)
 
 
 def install_edr(adapter: str):
@@ -65,15 +72,30 @@ def install_edr(adapter: str):
 
 
 def run_edr(edr_command: str):
+    print(f"Running the edr command.")
     subprocess.run(edr_command, shell=True)
 
 
+class Args(BaseModel):
+    adapter: str
+    profiles_yml: str
+    edr_command: str
+    bigquery_keyfile: Optional[str]
+    gcs_keyfile: Optional[str]
+
+
 def main():
-    adapter, profiles_yml, edr_command, bigquery_keyfile, gcs_keyfile = sys.argv
-    install_dbt(adapter)
-    setup_env(profiles_yml, bigquery_keyfile, gcs_keyfile)
-    install_edr(adapter)
-    run_edr(edr_command)
+    args = Args(
+        adapter=os.getenv("INPUT_WAREHOUSE-TYPE"),
+        profiles_yml=os.getenv("INPUT_PROFILES-YML"),
+        edr_command=os.getenv("INPUT_EDR-COMMAND"),
+        bigquery_keyfile=os.getenv("INPUT_BIGQUERY-KEYFILE"),
+        gcs_keyfile=os.getenv("INPUT_GCS-KEYFILE"),
+    )
+    install_dbt(args.adapter)
+    setup_env(args.profiles_yml, args.bigquery_keyfile, args.gcs_keyfile)
+    install_edr(args.adapter)
+    run_edr(args.edr_command)
 
 
 if __name__ == "__main__":
