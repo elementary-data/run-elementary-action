@@ -40,6 +40,9 @@ jobs:
   elementary:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout dbt project
+        uses: actions/checkout@v3
+
       - name: Run Elementary
         uses: elementary-data/run-elementary-action@v1.2
         with:
