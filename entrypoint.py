@@ -35,22 +35,27 @@ def setup_env(
 
 def install_edr(adapter: str):
     logging.info("Getting Elementary dbt package version.")
-    dbt_pkg_ver = (
-        subprocess.run(
-            [
-                "dbt",
-                "-q",
-                "run-operation",
-                "get_elementary_dbt_pkg_version",
-                "--project-dir",
-                "/edr_stager_dbt_project",
-            ],
-            check=True,
-            capture_output=True,
+    try:
+        dbt_pkg_ver = (
+            subprocess.run(
+                [
+                    "dbt",
+                    "-q",
+                    "run-operation",
+                    "get_elementary_dbt_pkg_version",
+                    "--project-dir",
+                    "/edr_stager_dbt_project",
+                ],
+                check=True,
+                capture_output=True,
+            )
+            .stdout.decode()
+            .strip()
         )
-        .stdout.decode()
-        .strip()
-    )
+    except subprocess.CalledProcessError as err:
+        logging.error(f"Failed to get Elementary dbt package version: {vars(err)}")
+        raise
+
     if not dbt_pkg_ver:
         logging.info(
             "Unable to get Elementary's dbt package version. Installing latest edr."
