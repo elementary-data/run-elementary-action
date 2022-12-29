@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Elementary
-        uses: elementary-data/run-elementary-action@v1.3
+        uses: elementary-data/run-elementary-action@v1
         with:
           warehouse-type: bigquery # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
           profiles-yml: ${{ secrets.PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
