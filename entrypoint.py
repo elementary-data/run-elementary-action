@@ -18,12 +18,15 @@ def install_dbt(adapter: str):
 
 
 def setup_env(
-    profiles_yml: str, bigquery_keyfile: Optional[str], gcs_keyfile: Optional[str]
+    profiles_yml: Optional[str],
+    bigquery_keyfile: Optional[str],
+    gcs_keyfile: Optional[str],
 ):
     logging.info(f"Setting up the environment.")
     dbt_dir = Path.home() / ".dbt"
     dbt_dir.mkdir(parents=True, exist_ok=True)
-    dbt_dir.joinpath("profiles.yml").write_text(profiles_yml)
+    if profiles_yml:
+        dbt_dir.joinpath("profiles.yml").write_text(profiles_yml)
     if bigquery_keyfile:
         Path("/tmp/bigquery_keyfile.json").write_text(bigquery_keyfile)
     if gcs_keyfile:
@@ -83,7 +86,7 @@ def run_edr(edr_command: str):
 
 class Args(BaseModel):
     adapter: str
-    profiles_yml: str
+    profiles_yml: Optional[str]
     edr_command: str
     bigquery_keyfile: Optional[str]
     gcs_keyfile: Optional[str]
