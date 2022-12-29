@@ -78,7 +78,7 @@ def install_edr(adapter: str):
 
 def run_edr(edr_command: str):
     logging.info(f"Running the edr command.")
-    subprocess.run(edr_command, shell=True)
+    subprocess.run(edr_command, shell=True, check=True)
 
 
 class Args(BaseModel):
@@ -100,7 +100,11 @@ def main():
     install_dbt(args.adapter)
     setup_env(args.profiles_yml, args.bigquery_keyfile, args.gcs_keyfile)
     install_edr(args.adapter)
-    run_edr(args.edr_command)
+    try:
+        run_edr(args.edr_command)
+    except subprocess.CalledProcessError:
+        logging.exception(f"Failed to run the edr command.")
+        raise
 
 
 if __name__ == "__main__":
