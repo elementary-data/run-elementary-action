@@ -7,12 +7,48 @@ To create a new workflow, simply create `.github/workflows/elementary.yml` withi
 If you have not yet installed Elementary's dbt package, please refer
 to [this guide](https://docs.elementary-data.com/quickstart#how-to-install-elementary-dbt-package).
 
+## Profile Setup
+
+If you already have a `profiles.yml` in your repository,
+checkout the repository and pass the environment variables that are used within it to the action.
+`edr` will automatically pick up on the `profiles.yml` file.
+
+```yaml
+- name: Checkout dbt project
+  uses: actions/checkout@v3
+
+- name: Run Elementary
+  uses: elementary-data/run-elementary-action@v1
+  env:
+    USER: ${{ secrets.USER }}
+    PASSWORD: ${{ secrets.PASSWORD }}
+  with:
+    edr-command: ...
+```
+
+If you do not have a `profiles.yml` in your repository, you can pass the credentials directly to the action.
 In order to generate the `profiles.yml` that is needed by `edr` to operate, run the following command within your dbt
 project:
 
 ```shell
 dbt run-operation --args '{"method": "github-actions"}' elementary.generate_elementary_cli_profile
 ```
+
+Afterwards, fill in the missing fields and copy the output to a secret in your repository.
+Once you've done that, you can pass the secret to the action.
+
+```yaml
+- name: Checkout dbt project
+  uses: actions/checkout@v3
+
+- name: Run Elementary
+  uses: elementary-data/run-elementary-action@v1
+  with:
+    profiles-yml: ${{ secrets.ELEMENTARY_PROFILES_YML }}
+    edr-command: ...
+```
+
+## Usage
 
 Below is a basic example of an Elementary workflow file.  
 For more information on how to
@@ -47,7 +83,7 @@ jobs:
         uses: elementary-data/run-elementary-action@v1
         with:
           warehouse-type: bigquery # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
-          profiles-yml: ${{ secrets.PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
+          profiles-yml: ${{ secrets.ELEMENTARY_PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
           edr-command: |
             edr monitor --slack-token ${{ secrets.SLACK_TOKEN }} --slack-channel-name ${{ secrets.SLACK_CHANNEL_NAME }} &&
             edr monitor report --file-path report.html &&
