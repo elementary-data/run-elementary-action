@@ -33,7 +33,7 @@ def setup_env(
         Path("/tmp/gcs_keyfile.json").write_text(gcs_keyfile)
 
 
-def install_edr(adapter: str):
+def install_edr(adapter: str, project_dir: Optional[str]):
     logging.info("Getting Elementary dbt package version.")
     try:
         dbt_pkg_ver = (
@@ -48,6 +48,7 @@ def install_edr(adapter: str):
                 ],
                 check=True,
                 capture_output=True,
+                cwd=project_dir
             )
             .stdout.decode()
             .strip()
@@ -84,13 +85,14 @@ def install_edr(adapter: str):
         )
 
 
-def run_edr(edr_command: str):
+def run_edr(edr_command: str, project_dir: Optional[str]):
     logging.info(f"Running the edr command.")
-    subprocess.run(edr_command, shell=True, check=True)
+    subprocess.run(edr_command, shell=True, check=True, cwd=project_dir)
 
 
 class Args(BaseModel):
     adapter: str
+    project_dir: Optional[str]
     profiles_yml: Optional[str]
     edr_command: str
     bigquery_keyfile: Optional[str]
@@ -100,6 +102,7 @@ class Args(BaseModel):
 def main():
     args = Args(
         adapter=os.getenv("INPUT_WAREHOUSE-TYPE"),
+        project_dir=os.getenv("INPUT_PROJECT-DIR"),
         profiles_yml=os.getenv("INPUT_PROFILES-YML"),
         edr_command=os.getenv("INPUT_EDR-COMMAND"),
         bigquery_keyfile=os.getenv("INPUT_BIGQUERY-KEYFILE"),
@@ -107,9 +110,9 @@ def main():
     )
     install_dbt(args.adapter)
     setup_env(args.profiles_yml, args.bigquery_keyfile, args.gcs_keyfile)
-    install_edr(args.adapter)
+    install_edr(args.adapter, args.project_dir)
     try:
-        run_edr(args.edr_command)
+        run_edr(args.edr_command, args.project_dir)
     except subprocess.CalledProcessError:
         logging.exception(f"Failed to run the edr command.")
         raise

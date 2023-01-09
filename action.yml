@@ -10,6 +10,12 @@ inputs:
   warehouse-type:
     description: 'The type of your warehouse (snowflake, bigquery, redshift, etc)'
     required: true
+  project-dir:
+    description: |
+      The path to your project dir.
+      You should pass this parameter if the dbt project dir is not located in the current directory (normally the 
+      repository root) - the EDR command will run with this directory as the working directory.
+    required: false
   profiles-yml:
     description: |
       The content of dbt's `profiles.yml` with the `elementary` profile.
