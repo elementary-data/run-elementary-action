@@ -7,7 +7,15 @@ To create a new workflow, simply create `.github/workflows/elementary.yml` withi
 If you have not yet installed Elementary's dbt package, please refer
 to [this guide](https://docs.elementary-data.com/quickstart#how-to-install-elementary-dbt-package).
 
-## Profile Setup
+## Setup
+
+`edr` requires a dbt connection profile called `elementary` that points to your Elementary schema in the warehouse.
+More information on that can be found [here](https://docs.elementary-data.com/quickstart-cli).
+Accordingly, we'll need to provide the action with that profile.
+
+In addition, we recommend that you integrate `edr` with your dbt project.
+This will make sure that the used data is kept up-to-date by running Elementary's models ahead of time.
+Accordingly, we'll need to `checkout` the dbt project before running the action, and provide its connection profile.
 
 If you already have a `profiles.yml` in your repository,
 checkout the repository and pass the environment variables that are used within it to the action.
