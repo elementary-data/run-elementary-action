@@ -26,7 +26,7 @@ checkout the repository and pass the environment variables that are used within 
   uses: actions/checkout@v3
 
 - name: Run Elementary
-  uses: elementary-data/run-elementary-action@v1
+  uses: elementary-data/run-elementary-action@v1.6
   env:
     USER: ${{ secrets.USER }}
     PASSWORD: ${{ secrets.PASSWORD }}
@@ -50,7 +50,7 @@ Once you've done that, you can pass the secret to the action.
   uses: actions/checkout@v3
 
 - name: Run Elementary
-  uses: elementary-data/run-elementary-action@v1
+  uses: elementary-data/run-elementary-action@v1.6
   with:
     profiles-yml: ${{ secrets.ELEMENTARY_PROFILES_YML }}
     edr-command: ...
@@ -88,7 +88,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Elementary
-        uses: elementary-data/run-elementary-action@v1
+        uses: elementary-data/run-elementary-action@v1.6
         with:
           warehouse-type: bigquery # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
           profiles-yml: ${{ secrets.ELEMENTARY_PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
