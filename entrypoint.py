@@ -48,7 +48,7 @@ def install_edr(adapter: str, project_dir: Optional[str]):
                 ],
                 check=True,
                 capture_output=True,
-                cwd=project_dir
+                cwd=project_dir,
             )
             .stdout.decode()
             .strip()
@@ -102,11 +102,11 @@ class Args(BaseModel):
 def main():
     args = Args(
         adapter=os.getenv("INPUT_WAREHOUSE-TYPE"),
-        project_dir=os.getenv("INPUT_PROJECT-DIR"),
         profiles_yml=os.getenv("INPUT_PROFILES-YML"),
         edr_command=os.getenv("INPUT_EDR-COMMAND"),
-        bigquery_keyfile=os.getenv("INPUT_BIGQUERY-KEYFILE"),
-        gcs_keyfile=os.getenv("INPUT_GCS-KEYFILE"),
+        project_dir=os.getenv("INPUT_PROJECT-DIR") or None,
+        bigquery_keyfile=os.getenv("INPUT_BIGQUERY-KEYFILE") or None,
+        gcs_keyfile=os.getenv("INPUT_GCS-KEYFILE") or None,
     )
     install_dbt(args.adapter)
     setup_env(args.profiles_yml, args.bigquery_keyfile, args.gcs_keyfile)
