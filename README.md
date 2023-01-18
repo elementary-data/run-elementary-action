@@ -92,14 +92,23 @@ jobs:
         with:
           warehouse-type: bigquery # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
           profiles-yml: ${{ secrets.ELEMENTARY_PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
-          edr-command: |
-            edr monitor --slack-token ${{ secrets.SLACK_TOKEN }} --slack-channel-name ${{ secrets.SLACK_CHANNEL_NAME }} &&
-            edr monitor report --file-path report.html &&
-            edr monitor send-report \
-              --slack-token ${{ secrets.SLACK_TOKEN }} --slack-channel-name ${{ secrets.SLACK_CHANNEL_NAME }} \
-              --aws-access-key-id ${{ secrets.AWS_ACCESS_KEY_ID }} --aws-secret-access-key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --s3-bucket-name ${{ secrets.S3_BUCKET_NAME }} \
-              --google-service-account-path /tmp/gcs_keyfile.json --gcs-bucket-name ${{ secrets.GCS_BUCKET_NAME }} \
-              --update-bucket-website true
+          edr-command:
+            edr monitor
+              --slack-token "${{ secrets.SLACK_TOKEN }}"
+              --slack-channel-name "${{ secrets.SLACK_CHANNEL_NAME }}"
+            &&
+            edr report
+              --file-path "report.html"
+            &&
+            edr send-report
+              --slack-token "${{ secrets.SLACK_TOKEN }}"
+              --slack-channel-name "${{ secrets.SLACK_CHANNEL_NAME }}"
+              --aws-access-key-id "${{ secrets.AWS_ACCESS_KEY_ID }}"
+              --aws-secret-access-key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+              --s3-bucket-name "${{ secrets.S3_BUCKET_NAME }}"
+              --google-service-account-path "/tmp/gcs_keyfile.json"
+              --gcs-bucket-name "${{ secrets.GCS_BUCKET_NAME }}"
+              --update-bucket-website "true"
 
           bigquery-keyfile: ${{ secrets.BIGQUERY_KEYFILE }} # If using BigQuery, the content of its keyfile.
           gcs-keyfile: ${{ secrets.GCS_KEYFILE }} # If using GCS, the content of its keyfile.
