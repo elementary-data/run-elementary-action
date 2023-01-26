@@ -57,16 +57,11 @@ def install_edr(adapter: str, project_dir: Optional[str]):
         ).stdout.decode("utf-8")
 
         for log_line in command_results.splitlines():
-            try:
-                log = json.loads(log_line)
-                message = log.get("info", {}).get("msg") or log.get("data", {}).get(
-                    "msg"
-                )
-                if message.startswith(EDR_STAGER_PREFIX):
-                    dbt_pkg_ver = message[len(EDR_STAGER_PREFIX) :]
-                    break
-            except Exception:
-                pass
+            log = json.loads(log_line)
+            message = log.get("info", {}).get("msg") or log.get("data", {}).get("msg")
+            if message.startswith(EDR_STAGER_PREFIX):
+                dbt_pkg_ver = message[len(EDR_STAGER_PREFIX) :]
+                break
 
     except subprocess.CalledProcessError as err:
         logging.error(f"Failed to get Elementary dbt package version: {vars(err)}")
