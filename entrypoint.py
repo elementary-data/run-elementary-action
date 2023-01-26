@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import subprocess
@@ -9,6 +10,9 @@ from packaging import version
 from pydantic import BaseModel
 
 logging.basicConfig(format="%(asctime)s %(message)s", level=logging.DEBUG)
+
+
+EDR_STAGER_PREFIX = "edr_stager: "
 
 
 def install_dbt(adapter: str):
@@ -36,23 +40,34 @@ def setup_env(
 def install_edr(adapter: str, project_dir: Optional[str]):
     logging.info("Getting Elementary dbt package version.")
     try:
-        dbt_pkg_ver = (
-            subprocess.run(
-                [
-                    "dbt",
-                    "-q",
-                    "run-operation",
-                    "get_elementary_dbt_pkg_version",
-                    "--project-dir",
-                    "/edr_stager_dbt_project",
-                ],
-                check=True,
-                capture_output=True,
-                cwd=project_dir,
-            )
-            .stdout.decode()
-            .strip()
-        )
+        dbt_pkg_ver = None
+        command_results = subprocess.run(
+            [
+                "dbt",
+                "--log-format",
+                "json",
+                "run-operation",
+                "get_elementary_dbt_pkg_version",
+                "--project-dir",
+                "/edr_stager_dbt_project",
+            ],
+            check=True,
+            capture_output=True,
+            cwd=project_dir,
+        ).stdout.decode("utf-8")
+
+        for log_line in command_results.splitlines():
+            try:
+                log = json.loads(log_line)
+                message = log.get("info", {}).get("msg") or log.get("data", {}).get(
+                    "msg"
+                )
+                if message.startswith(EDR_STAGER_PREFIX):
+                    dbt_pkg_ver = message[len(EDR_STAGER_PREFIX) :]
+                    break
+            except Exception:
+                pass
+
     except subprocess.CalledProcessError as err:
         logging.error(f"Failed to get Elementary dbt package version: {vars(err)}")
         raise
