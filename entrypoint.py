@@ -55,11 +55,13 @@ def install_edr(adapter: str, project_dir: Optional[str]):
             capture_output=True,
             cwd=project_dir,
         ).stdout.decode("utf-8")
-
         for log_line in command_results.splitlines():
-            log = json.loads(log_line)
+            try:
+                log = json.loads(log_line)
+            except json.decoder.JSONDecodeError:
+                log = {}
             message = log.get("info", {}).get("msg") or log.get("data", {}).get("msg")
-            if message.startswith(EDR_STAGER_PREFIX):
+            if message and message.startswith(EDR_STAGER_PREFIX):
                 dbt_pkg_ver = message[len(EDR_STAGER_PREFIX) :]
                 break
 
