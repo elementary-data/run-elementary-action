@@ -138,6 +138,8 @@ You can create a secret and then pass it.
 profiles-yml: ${{ secrets.PROFILES_YML }}
 ```
 
+Please make sure to quote any field that may contain special characters (For instance `'#$Password\&^'`).
+
 <img width="1097" alt="image" src="https://user-images.githubusercontent.com/30181361/185250359-918a10ab-b323-4ce3-b598-307ecedadeb9.png">
 
 ### BigQuery Keyfile Authentication
