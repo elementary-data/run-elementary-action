@@ -28,7 +28,7 @@ checkout the repository and pass the environment variables that are used within 
 - name: Run Elementary
   uses: elementary-data/run-elementary-action@v1.8
   env:
-    USER: ${{ secrets.USER }}
+    USER: ${{ secrets.USER }} # Used in profiles.yml.
     PASSWORD: ${{ secrets.PASSWORD }}
   with:
     edr-command: ...
