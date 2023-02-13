@@ -43,21 +43,22 @@ def install_edr(
     logging.info("Getting Elementary dbt package version.")
     try:
         dbt_pkg_ver = None
-        possible_target_flag = (
-            ["--target", profile_target] if profile_target is not None else []
-        )
+
+        dbt_command = [
+            "dbt",
+            "--log-format",
+            "json",
+            "run-operation",
+            "get_elementary_dbt_pkg_version",
+            "--project-dir",
+            "/edr_stager_dbt_project",
+        ]
+
+        if profile_target:
+            dbt_command.extend(["--target", profile_target])
 
         command_results = subprocess.run(
-            [
-                "dbt",
-                "--log-format",
-                "json",
-                "run-operation",
-                "get_elementary_dbt_pkg_version",
-                "--project-dir",
-                "/edr_stager_dbt_project",
-            ]
-            + possible_target_flag,
+            dbt_command,
             check=True,
             capture_output=True,
             cwd=project_dir,

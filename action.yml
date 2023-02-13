@@ -28,8 +28,6 @@ inputs:
   profile-target:
     description: |
       Which target to load for the given profile.
-      If specified, the target will be used for both the 'elementary' profile and your dbt project.
-      Else, the default target will be used.
     required: false
 
 
