@@ -27,7 +27,9 @@ inputs:
     required: true
   profile-target:
     description: |
-      Which target to load for the given profile.
+      Target profile used for internal dbt calls.
+      If your `edr_command` uses the `--profile-target` or `--project-profile-target` flags,
+      please set this attribute to the value of those flags.
     required: false
 
 
