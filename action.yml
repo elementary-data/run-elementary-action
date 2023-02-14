@@ -25,6 +25,13 @@ inputs:
   edr-command:
     description: The command to run, for example `edr monitor --slack-webhook <SECRET_SLACK_WEBHOOK>`.
     required: true
+  profile-target:
+    description: |
+      Target profile used for internal dbt calls.
+      If your `edr_command` uses the `--profile-target` or `--project-profile-target` flags,
+      please set this attribute to the value of those flags.
+    required: false
+
 
   bigquery-keyfile:
     description: The content of your BigQuery keyfile.
