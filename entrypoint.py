@@ -117,6 +117,7 @@ class Args(BaseModel):
     edr_command: str
     bigquery_keyfile: Optional[str]
     gcs_keyfile: Optional[str]
+    profile_target: Optional[str]
 
 
 def main():
