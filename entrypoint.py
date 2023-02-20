@@ -37,20 +37,28 @@ def setup_env(
         Path("/tmp/gcs_keyfile.json").write_text(gcs_keyfile)
 
 
-def install_edr(adapter: str, project_dir: Optional[str]):
+def install_edr(
+    adapter: str, project_dir: Optional[str], profile_target: Optional[str]
+):
     logging.info("Getting Elementary dbt package version.")
     try:
         dbt_pkg_ver = None
+
+        dbt_command = [
+            "dbt",
+            "--log-format",
+            "json",
+            "run-operation",
+            "get_elementary_dbt_pkg_version",
+            "--project-dir",
+            "/edr_stager_dbt_project",
+        ]
+
+        if profile_target:
+            dbt_command.extend(["--target", profile_target])
+
         command_results = subprocess.run(
-            [
-                "dbt",
-                "--log-format",
-                "json",
-                "run-operation",
-                "get_elementary_dbt_pkg_version",
-                "--project-dir",
-                "/edr_stager_dbt_project",
-            ],
+            dbt_command,
             check=True,
             capture_output=True,
             cwd=project_dir,
@@ -109,6 +117,7 @@ class Args(BaseModel):
     edr_command: str
     bigquery_keyfile: Optional[str]
     gcs_keyfile: Optional[str]
+    profile_target: Optional[str]
 
 
 def main():
@@ -116,13 +125,14 @@ def main():
         adapter=os.getenv("INPUT_WAREHOUSE-TYPE"),
         profiles_yml=os.getenv("INPUT_PROFILES-YML"),
         edr_command=os.getenv("INPUT_EDR-COMMAND"),
+        profile_target=os.getenv("INPUT_PROFILE-TARGET") or None,
         project_dir=os.getenv("INPUT_PROJECT-DIR") or None,
         bigquery_keyfile=os.getenv("INPUT_BIGQUERY-KEYFILE") or None,
         gcs_keyfile=os.getenv("INPUT_GCS-KEYFILE") or None,
     )
     install_dbt(args.adapter)
     setup_env(args.profiles_yml, args.bigquery_keyfile, args.gcs_keyfile)
-    install_edr(args.adapter, args.project_dir)
+    install_edr(args.adapter, args.project_dir, args.profile_target)
     try:
         run_edr(args.edr_command, args.project_dir)
     except subprocess.CalledProcessError:
