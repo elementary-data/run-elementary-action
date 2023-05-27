@@ -15,8 +15,10 @@ logging.basicConfig(format="%(asctime)s %(message)s", level=logging.DEBUG)
 EDR_STAGER_PREFIX = "edr_stager: "
 
 
-def install_dbt(adapter: str):
-    dbt_pkg_name = f"dbt-{adapter}"
+def install_dbt(adapter: str, adapter_version: Optional[str] = None):
+    dbt_pkg_name = (
+        f"dbt-{adapter}=={adapter_version}" if adapter_version else f"dbt-{adapter}"
+    )
     logging.info(f"Installing {dbt_pkg_name}")
     subprocess.run([sys.executable, "-m", "pip", "install", dbt_pkg_name], check=True)
 
@@ -112,6 +114,7 @@ def run_edr(edr_command: str, project_dir: Optional[str]):
 
 class Args(BaseModel):
     adapter: str
+    adapter_version: Optional[str]
     project_dir: Optional[str]
     profiles_yml: Optional[str]
     edr_command: str
@@ -129,8 +132,9 @@ def main():
         project_dir=os.getenv("INPUT_PROJECT-DIR") or None,
         bigquery_keyfile=os.getenv("INPUT_BIGQUERY-KEYFILE") or None,
         gcs_keyfile=os.getenv("INPUT_GCS-KEYFILE") or None,
+        adapter_version=os.getenv("INPUT_ADAPTER-VERSION") or None,
     )
-    install_dbt(args.adapter)
+    install_dbt(args.adapter, args.adapter_version)
     setup_env(args.profiles_yml, args.bigquery_keyfile, args.gcs_keyfile)
     install_edr(args.adapter, args.project_dir, args.profile_target)
     try:
