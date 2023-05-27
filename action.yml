@@ -1,15 +1,20 @@
-name: 'Run Elementary'
-author: 'Elementary Data'
-description: 'Monitor your dbt project and be the first to know of data issues.'
+name: "Run Elementary"
+author: "Elementary Data"
+description: "Monitor your dbt project and be the first to know of data issues."
 
 branding:
-  icon: 'activity'
-  color: 'red'
+  icon: "activity"
+  color: "red"
 
 inputs:
   warehouse-type:
     description: The type of your warehouse (snowflake, bigquery, redshift, etc)
     required: true
+  adapter-version:
+    description: |
+      The dbt-adapter version that should be used (1.5.0 for example).
+      If not provided, the latest version will be used.
+    required: false
   project-dir:
     description: |
       The path to your dbt project dir.
@@ -32,7 +37,6 @@ inputs:
       please set this attribute to the value of those flags.
     required: false
 
-
   bigquery-keyfile:
     description: The content of your BigQuery keyfile.
     required: false
@@ -40,7 +44,6 @@ inputs:
     description: The content of your Google service account keyfile, for usage with Google Cloud Storage.
     required: false
 
-
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
