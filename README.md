@@ -67,15 +67,15 @@ name: Run Elementary
 on:
   # Run the action when a push to the main branch of the repository is made.
   push:
-    branches: ["main", "master"]
+    branches: [ "main", "master" ]
 
   # Run the action when a pull request to the main branch is opened.
   pull_request:
-    branches: ["main", "master"]
+    branches: [ "main", "master" ]
 
   # Run the action in a scheduled manner every hour.
   schedule:
-    - cron: "0 * * * *"
+    - cron: '0 * * * *'
 
   # Allows you to run this workflow manually from the Actions tab.
   workflow_dispatch:
@@ -91,24 +91,25 @@ jobs:
         uses: elementary-data/run-elementary-action@v1.8
         with:
           warehouse-type: bigquery # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
-          adapter-version: 1.5.0 # The dbt-adapter version that should be used (If not provided the latest version will be used).
+          adapter-version: 1.5.0 # The dbt-adapter version that should be used (If not provided the latest version will be used). 
           profiles-yml: ${{ secrets.ELEMENTARY_PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
-          edr-command: edr monitor
-            --slack-token "${{ secrets.SLACK_TOKEN }}"
-            --slack-channel-name "${{ secrets.SLACK_CHANNEL_NAME }}"
+          edr-command:
+            edr monitor
+              --slack-token "${{ secrets.SLACK_TOKEN }}"
+              --slack-channel-name "${{ secrets.SLACK_CHANNEL_NAME }}"
             &&
             edr report
-            --file-path "report.html"
+              --file-path "report.html"
             &&
             edr send-report
-            --slack-token "${{ secrets.SLACK_TOKEN }}"
-            --slack-channel-name "${{ secrets.SLACK_CHANNEL_NAME }}"
-            --aws-access-key-id "${{ secrets.AWS_ACCESS_KEY_ID }}"
-            --aws-secret-access-key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-            --s3-bucket-name "${{ secrets.S3_BUCKET_NAME }}"
-            --google-service-account-path "/tmp/gcs_keyfile.json"
-            --gcs-bucket-name "${{ secrets.GCS_BUCKET_NAME }}"
-            --update-bucket-website "true"
+              --slack-token "${{ secrets.SLACK_TOKEN }}"
+              --slack-channel-name "${{ secrets.SLACK_CHANNEL_NAME }}"
+              --aws-access-key-id "${{ secrets.AWS_ACCESS_KEY_ID }}"
+              --aws-secret-access-key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+              --s3-bucket-name "${{ secrets.S3_BUCKET_NAME }}"
+              --google-service-account-path "/tmp/gcs_keyfile.json"
+              --gcs-bucket-name "${{ secrets.GCS_BUCKET_NAME }}"
+              --update-bucket-website "true"
 
           bigquery-keyfile: ${{ secrets.BIGQUERY_KEYFILE }} # If using BigQuery, the content of its keyfile.
           gcs-keyfile: ${{ secrets.GCS_KEYFILE }} # If using GCS, the content of its keyfile.
