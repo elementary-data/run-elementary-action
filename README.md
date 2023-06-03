@@ -91,6 +91,7 @@ jobs:
         uses: elementary-data/run-elementary-action@v1.8
         with:
           warehouse-type: bigquery # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
+          adapter-version: 1.5.0 # The dbt-adapter version that should be used (If not provided the latest version will be used). 
           profiles-yml: ${{ secrets.ELEMENTARY_PROFILES_YML }} # Content of ~/.dbt/profiles.yml, should have an `elementary` profile.
           edr-command:
             edr monitor
@@ -131,7 +132,7 @@ jobs:
 
 ### Elementary Profile
 
-Note that the `profiles-yml` argument needs to be the **content** of  `profiles.yml` rather than a path to it.  
+Note that the `profiles-yml` argument needs to be the **content** of `profiles.yml` rather than a path to it.  
 You can create a secret and then pass it.
 
 ```yml
