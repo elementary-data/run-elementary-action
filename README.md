@@ -88,7 +88,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Elementary
-        uses: elementary-data/run-elementary-action@v1.8
+        uses: elementary-data/run-elementary-action@v1.11
         with:
           warehouse-type: bigquery # Type of warehouse to use (bigquery, snowflake, redshift, etc.)
           adapter-version: 1.5.0 # The dbt-adapter version that should be used (If not provided the latest version will be used). 
