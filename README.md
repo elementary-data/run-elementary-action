@@ -50,7 +50,7 @@ Once you've done that, you can pass the secret to the action.
   uses: actions/checkout@v3
 
 - name: Run Elementary
-  uses: elementary-data/run-elementary-action@v1.8
+  uses: elementary-data/run-elementary-action@v1.11
   with:
     profiles-yml: ${{ secrets.ELEMENTARY_PROFILES_YML }}
     edr-command: ...
