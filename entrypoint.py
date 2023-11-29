@@ -40,7 +40,7 @@ def setup_env(
 
 
 def install_edr(
-    adapter: str, project_dir: Optional[str], profile_target: Optional[str]
+    adapter: str, project_dir: Optional[str], profile_target: Optional[str], fail_edr_version: Optional[str]
 ):
     logging.info("Getting Elementary dbt package version.")
     try:
@@ -78,6 +78,12 @@ def install_edr(
     except subprocess.CalledProcessError as err:
         logging.error(f"Failed to get Elementary dbt package version: {vars(err)}")
         raise
+
+    if fail_edr_version and not dbt_pkg_ver:
+        dbt_pkg_ver = fail_edr_version
+        logging.info(
+            f"Elementary version overriden: {dbt_pkg_ver}"
+        )
 
     if not dbt_pkg_ver:
         logging.info(
@@ -121,6 +127,7 @@ class Args(BaseModel):
     bigquery_keyfile: Optional[str]
     gcs_keyfile: Optional[str]
     profile_target: Optional[str]
+    fail_edr_version: Optional[str]
 
 
 def main():
@@ -133,10 +140,11 @@ def main():
         bigquery_keyfile=os.getenv("INPUT_BIGQUERY-KEYFILE") or None,
         gcs_keyfile=os.getenv("INPUT_GCS-KEYFILE") or None,
         adapter_version=os.getenv("INPUT_ADAPTER-VERSION") or None,
+        fail_edr_version=os.getenv("INPUT_FAIL-EDR-VERSION") or None,
     )
     install_dbt(args.adapter, args.adapter_version)
     setup_env(args.profiles_yml, args.bigquery_keyfile, args.gcs_keyfile)
-    install_edr(args.adapter, args.project_dir, args.profile_target)
+    install_edr(args.adapter, args.project_dir, args.profile_target, args.fail_edr_version)
     try:
         run_edr(args.edr_command, args.project_dir)
     except subprocess.CalledProcessError:
