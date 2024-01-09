@@ -32,3 +32,8 @@
     {% set database = target.project %}
     {{ return(database) }}
 {% endmacro %}
+
+{% macro databricks__target_database() %}
+    {% set database = target.schema %}
+    {{ return(database) }}
+{% endmacro %}
