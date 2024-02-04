@@ -149,6 +149,12 @@ If you're using BigQuery with a key file,
 supply the `bigquery-keyfile` argument to the action and make sure your `keyfile` in the `profiles-yml`
 is `/tmp/bigquery_keyfile.json`.
 
+### Snowflake Keyfile Authentication
+
+If you're using Snowflake with a key file,
+supply the `snowflake-keyfile` argument to the action and make sure your `private_key_path` in the `profiles-yml`
+is `/tmp/snowflake_keyfile.key`.
+
 ### Google Cloud Storage Keyfile
 
 If you want to upload your report to a Google Cloud Storage bucket using `send-report`,

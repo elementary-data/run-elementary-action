@@ -27,8 +27,9 @@ def setup_env(
     profiles_yml: Optional[str],
     bigquery_keyfile: Optional[str],
     gcs_keyfile: Optional[str],
+    snowflake_keyfile: Optional[str],
 ):
-    logging.info(f"Setting up the environment.")
+    logging.info("Setting up the environment.")
     dbt_dir = Path.home() / ".dbt"
     dbt_dir.mkdir(parents=True, exist_ok=True)
     if profiles_yml:
@@ -37,6 +38,8 @@ def setup_env(
         Path("/tmp/bigquery_keyfile.json").write_text(bigquery_keyfile)
     if gcs_keyfile:
         Path("/tmp/gcs_keyfile.json").write_text(gcs_keyfile)
+    if snowflake_keyfile:
+        Path("/tmp/snowflake_keyfile.key").write_text(snowflake_keyfile)
 
 
 def install_edr(
@@ -108,7 +111,7 @@ def install_edr(
 
 
 def run_edr(edr_command: str, project_dir: Optional[str]):
-    logging.info(f"Running the edr command.")
+    logging.info("Running the edr command.")
     subprocess.run(edr_command, shell=True, check=True, cwd=project_dir)
 
 
@@ -119,6 +122,7 @@ class Args(BaseModel):
     profiles_yml: Optional[str]
     edr_command: str
     bigquery_keyfile: Optional[str]
+    snowflake_keyfile: Optional[str]
     gcs_keyfile: Optional[str]
     profile_target: Optional[str]
 
@@ -131,16 +135,22 @@ def main():
         profile_target=os.getenv("INPUT_PROFILE-TARGET") or None,
         project_dir=os.getenv("INPUT_PROJECT-DIR") or None,
         bigquery_keyfile=os.getenv("INPUT_BIGQUERY-KEYFILE") or None,
+        snowflake_keyfile=os.getenv("INPUT_SNOWFLAKE-KEYFILE") or None,
         gcs_keyfile=os.getenv("INPUT_GCS-KEYFILE") or None,
         adapter_version=os.getenv("INPUT_ADAPTER-VERSION") or None,
     )
     install_dbt(args.adapter, args.adapter_version)
-    setup_env(args.profiles_yml, args.bigquery_keyfile, args.gcs_keyfile)
+    setup_env(
+        args.profiles_yml,
+        args.bigquery_keyfile,
+        args.gcs_keyfile,
+        args.snowflake_keyfile,
+    )
     install_edr(args.adapter, args.project_dir, args.profile_target)
     try:
         run_edr(args.edr_command, args.project_dir)
     except subprocess.CalledProcessError:
-        logging.exception(f"Failed to run the edr command.")
+        logging.exception("Failed to run the edr command.")
         raise
 
 
