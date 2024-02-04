@@ -153,7 +153,7 @@ is `/tmp/bigquery_keyfile.json`.
 
 If you're using Snowflake with a key file,
 supply the `snowflake-keyfile` argument to the action and make sure your `private_key_path` in the `profiles-yml`
-is `tmp/snowflake_keyfile.key`.
+is `/tmp/snowflake_keyfile.key`.
 
 ### Google Cloud Storage Keyfile
 

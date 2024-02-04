@@ -39,7 +39,7 @@ def setup_env(
     if gcs_keyfile:
         Path("/tmp/gcs_keyfile.json").write_text(gcs_keyfile)
     if snowflake_keyfile:
-        Path("tmp/snowflake_keyfile.key").write_text(snowflake_keyfile)
+        Path("/tmp/snowflake_keyfile.key").write_text(snowflake_keyfile)
 
 
 def install_edr(
