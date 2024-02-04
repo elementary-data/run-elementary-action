@@ -40,6 +40,9 @@ inputs:
   bigquery-keyfile:
     description: The content of your BigQuery keyfile.
     required: false
+  snowflake-keyfile:
+    description: The content of your Snowflake keyfile.
+    required: false
   gcs-keyfile:
     description: The content of your Google service account keyfile, for usage with Google Cloud Storage.
     required: false
