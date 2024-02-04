@@ -26,7 +26,7 @@ checkout the repository and pass the environment variables that are used within 
   uses: actions/checkout@v3
 
 - name: Run Elementary
-  uses: elementary-data/run-elementary-action@v1.11
+  uses: elementary-data/run-elementary-action@v1.12
   env:
     USER: ${{ secrets.USER }} # Used in profiles.yml.
     PASSWORD: ${{ secrets.PASSWORD }}
