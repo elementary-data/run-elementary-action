@@ -1,4 +1,4 @@
-FROM python:3.9.17
+FROM python:3.10.17
 
 COPY requirements.txt /requirements.txt
 RUN pip install --no-cache-dir -r /requirements.txt
