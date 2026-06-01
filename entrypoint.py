@@ -19,8 +19,15 @@ def install_dbt(adapter: str, adapter_version: Optional[str] = None):
     dbt_pkg_name = (
         f"dbt-{adapter}=={adapter_version}" if adapter_version else f"dbt-{adapter}"
     )
+    # dbt adapters declare `dbt-core>=X.Y.0rc0`, and the rc0 marker enables pip's
+    # pre-release resolution for dbt-core. Without an upper bound this pulls in
+    # dbt-core 2.0.0a1 (released 2026-06-01), which breaks the action. Pin to <2
+    # in the same resolution so the adapter is installed against a 1.x dbt-core.
     logging.info(f"Installing {dbt_pkg_name}")
-    subprocess.run([sys.executable, "-m", "pip", "install", dbt_pkg_name], check=True)
+    subprocess.run(
+        [sys.executable, "-m", "pip", "install", dbt_pkg_name, "dbt-core<2.0.0"],
+        check=True,
+    )
 
 
 def setup_env(
